@@ -1,13 +1,13 @@
 package edu.brown.cs.student.main.toRemove.csv;
 
-import edu.brown.cs.student.main.toRemove.csv.datamodel.Header;
-import edu.brown.cs.student.main.toRemove.csv.parser.CreatorFromRow;
-import edu.brown.cs.student.main.toRemove.csv.parser.DataParser;
-import edu.brown.cs.student.main.toRemove.csv.parser.FactoryFailureException;
 import edu.brown.cs.student.main.server.SearchOptions;
 import edu.brown.cs.student.main.server.SearchResult;
 import edu.brown.cs.student.main.server.SearchType;
 import edu.brown.cs.student.main.server.Searcher;
+import edu.brown.cs.student.main.toRemove.csv.datamodel.Header;
+import edu.brown.cs.student.main.toRemove.csv.parser.CreatorFromRow;
+import edu.brown.cs.student.main.toRemove.csv.parser.DataParser;
+import edu.brown.cs.student.main.toRemove.csv.parser.FactoryFailureException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;

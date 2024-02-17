@@ -1,7 +1,5 @@
 package edu.brown.cs.student.main.search;
 
-import static edu.brown.cs.student.main.csv.CLI.logToFile;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +18,7 @@ public class Search {
 
   private final List<int[]> foundPositions = new ArrayList<>();
 
+  /** Constructor for Search class */
   public Search() {}
 
   /**
@@ -51,10 +50,9 @@ public class Search {
   public void searchAll() {
     if (this.values == null || this.values.isEmpty()) {
       printLogger("No data found in CSV");
-      logToFile("No data found in CSV");
+      // logToFile("No data found in CSV");
       return; // Exit method if values are null or empty
     }
-
 
     boolean isWordFound = false; // Flag to check if the word was found at least once
 
@@ -66,7 +64,7 @@ public class Search {
 
       for (int j = 0; j < row.length; j++) {
         if (row[j] != null && row[j].equalsIgnoreCase(this.wordToFind)) {
-          this.foundPositions.add(new int[]{i, j});
+          this.foundPositions.add(new int[] {i, j});
           isWordFound = true; // Set flag to true bc we found the word
         }
       }
@@ -77,7 +75,7 @@ public class Search {
       printLogger(this.wordToFind + " was found in " + readablePositions);
     } else {
       printLogger("The word " + this.wordToFind + " was not found in any row.");
-      logToFile("The word " + this.wordToFind + " was not found in any row.");
+      // logToFile("The word " + this.wordToFind + " was not found in any row.");
     }
   }
 
@@ -85,7 +83,7 @@ public class Search {
   private void searchColumn() {
     if (this.values == null || this.values.isEmpty()) {
       printLogger("No data found in CSV.");
-      logToFile("No data found in CSV.");
+      // logToFile("No data found in CSV.");
       return;
     }
 
@@ -104,7 +102,7 @@ public class Search {
 
       String cellValue = row[columnIndex];
       if (cellValue != null && cellValue.equalsIgnoreCase(wordToFind)) {
-        foundPositions.add(new int[]{i, columnIndex});
+        foundPositions.add(new int[] {i, columnIndex});
         isWordFound = true;
       }
     }
@@ -114,7 +112,7 @@ public class Search {
       printLogger(this.wordToFind + " was found in " + readablePositions);
     } else {
       printLogger("Word " + this.wordToFind + " not found in column " + this.columnToSearch + ".");
-      logToFile("Word " + this.wordToFind + " not found in column " + this.columnToSearch + ".");
+      // logToFile("Word " + this.wordToFind + " not found in column " + this.columnToSearch + ".");
     }
   }
 
@@ -145,15 +143,25 @@ public class Search {
     }
     // If the code reaches this point, the column name was not found
     printLogger("Column " + this.columnToSearch + " not found.");
-    logToFile("Column " + this.columnToSearch + " not found.");
+    // logToFile("Column " + this.columnToSearch + " not found.");
     return -1; //  column wasn't found
   }
 
+  /**
+   * Logs message to the output
+   *
+   * @param message String to be logged
+   */
   private void printLogger(String message) {
     System.out.println(message);
     this.output.append(message);
   }
 
+  /**
+   * Converts the positions array into a string representation
+   *
+   * @return String containing the found positions
+   */
   private String convertToReadableString() {
     StringBuilder sb = new StringBuilder();
     String[][] positionsArray = getFoundPositionsArray();
@@ -164,7 +172,11 @@ public class Search {
     return sb.toString();
   }
 
-
+  /**
+   * Gets the position as a 2D array of Strings
+   *
+   * @return 2D array of Strings representing the found positions
+   */
   public String[][] getFoundPositionsArray() {
     String[][] positionsArray = new String[foundPositions.size()][2];
     for (int i = 0; i < foundPositions.size(); i++) {
@@ -181,11 +193,8 @@ public class Search {
    * @return A string representation of the search results and any relevant messages.
    */
   public String getOutput() {
-    // Ensure to call CSVSearch before calling this method to populate `output` appropriately
     String result = this.output.toString();
     output.setLength(0);
     return result;
   }
 }
-
-

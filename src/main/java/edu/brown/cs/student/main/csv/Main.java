@@ -1,5 +1,7 @@
 package edu.brown.cs.student.main.csv;
 
+import edu.brown.cs.student.main.server.Server;
+
 /** The Main class of our project. This is where execution begins. */
 public final class Main {
   /**
@@ -15,6 +17,6 @@ public final class Main {
 
   /** Starts the CLI */
   private void run() {
-    CLI prompt = new CLI();
+    Server server = new Server();
   }
 }

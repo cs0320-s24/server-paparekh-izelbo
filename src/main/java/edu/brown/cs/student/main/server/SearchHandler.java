@@ -1,14 +1,10 @@
 package edu.brown.cs.student.main.server;
 
-import edu.brown.cs.student.main.interfaces.Creator;
 import edu.brown.cs.student.main.search.Parser;
 import edu.brown.cs.student.main.search.Search;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -19,7 +15,6 @@ public class SearchHandler implements Route {
 
   public SearchHandler(LoadHandler loadHandler) {
     this.loadHandler = loadHandler;
-
   }
 
   @Override
@@ -31,7 +26,7 @@ public class SearchHandler implements Route {
       String word = request.queryParams("word");
       String column = request.queryParams("column");
 
-      //So we don't have to parse more than once
+      // So we don't have to parse more than once
 
       Parser parser = this.loadHandler.getParser();
 
@@ -54,9 +49,50 @@ public class SearchHandler implements Route {
       responseMap.put("result", "error");
     }
 
-    //success?
+    // success?
     return responseMap;
-
   }
-
 }
+//  /** Success response after completing search */
+//  public record SearchSuccessResponse(String responseType, Map<String, Object> responseMap) {
+//
+//    /**
+//     * Constructs a SearchSuccessResponse with a default success response type.
+//     *
+//     * @param responseMap the response map
+//     */
+//    public SearchSuccessResponse(Map<String, Object> responseMap) {
+//      this("success", responseMap);
+//    }
+//
+//    /**
+//     * Serializes the county JSON data
+//     *
+//     * @param countyJson the JSON data
+//     * @return the output serialized JSON data
+//     */
+//    String serialize(String countyJson) {
+//
+//      String[][] counties = Serialization.convertToArray(countyJson);
+//
+//      int columnLength = counties.length;
+//      int rowLength = counties[0].length;
+//      String[][] SerializedData = new String[columnLength - 1][rowLength - 2];
+//
+//      for (int r = 0; r < SerializedData.length; r++) {
+//        for (int c = 0; c < SerializedData[c].length; c++) {
+//          SerializedData[c][c] = counties[c + 1][c];
+//        }
+//      }
+//
+//      String jsonData;
+//      try {
+//        jsonData = Serialization.convertToJson(SerializedData);
+//      } catch (IOException e) {
+//        throw new RuntimeException(e);
+//      }
+//      responseMap.put("data", jsonData);
+//
+//      return jsonData;
+//    }
+//  }

@@ -1,14 +1,9 @@
 package edu.brown.cs.student.main.server;
 
-import edu.brown.cs.student.main.interfaces.Creator;
 import edu.brown.cs.student.main.search.Parser;
-import edu.brown.cs.student.main.search.Search;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -19,7 +14,6 @@ public class ViewHandler implements Route {
 
   public ViewHandler(LoadHandler loadHandler) {
     this.loadHandler = loadHandler;
-
   }
 
   @Override
@@ -28,7 +22,7 @@ public class ViewHandler implements Route {
 
     try {
 
-      //So we don't have to parse more than once
+      // So we don't have to parse more than once
 
       Parser parser = this.loadHandler.getParser();
 
@@ -48,11 +42,9 @@ public class ViewHandler implements Route {
       responseMap.put("result", "error");
     }
 
-    //success?
+    // success?
     return responseMap;
-
   }
-
 
   public String[][] listToArray(List<String[]> list) {
     String[][] array = new String[list.size()][];
@@ -61,5 +53,4 @@ public class ViewHandler implements Route {
     }
     return array;
   }
-
 }

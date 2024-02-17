@@ -2,18 +2,17 @@ package edu.brown.cs.student.main.server;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
-import com.squareup.moshi.Moshi;
-import com.squareup.moshi.Types;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import spark.Request;
-import spark.Response;
-import spark.Route;
 
+/** Allows for JSON serialization and deserialization functionality using Moshi */
 public class Serialization {
 
+  /**
+   * Converts JSON string to a 2D string array
+   *
+   * @param countyJson the JSON string
+   * @return a 2D JSON string array
+   */
   public static String[][] convertToArray(String countyJson) {
     try {
       JsonAdapter<String[][]> jsonArrayAdapter = moshiBuilder();
@@ -25,12 +24,25 @@ public class Serialization {
     }
   }
 
+  /**
+   * Converts a 2D string array to a JSON string
+   *
+   * @param countyString the 2D string array
+   * @return a JSON string
+   * @throws IOException if an I/O error occurs during conversion
+   */
   public static String convertToJson(String[][] countyString) throws IOException {
     JsonAdapter<String[][]> jsonArrayAdapter = moshiBuilder();
     String data = jsonArrayAdapter.toJson(countyString);
     return data;
   }
 
+  /**
+   * Builds a Moshi JSON adapter for a 2D string array.
+   *
+   * @return a Moshi JSON adapter for a 2D string array.
+   * @throws IOException if an I/O error occurs during adapter creation.
+   */
   public static JsonAdapter<String[][]> moshiBuilder() throws IOException {
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<String[][]> jsonAdapter = moshi.adapter(String[][].class);

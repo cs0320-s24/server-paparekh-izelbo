@@ -11,4 +11,3 @@ public class Creator implements CreatorFromRow<String[]> {
     return row.toArray(new String[0]);
   }
 }
-

@@ -10,6 +10,12 @@ import java.util.List;
 public class FactoryFailureException extends Exception {
   final List<String> row;
 
+  /**
+   * Constructs a new FactoryFailureException with the specified detail message and row data.
+   *
+   * @param message the message used for retrieval
+   * @param row an array list
+   */
   public FactoryFailureException(String message, List<String> row) {
     super(message);
     this.row = new ArrayList<>(row);

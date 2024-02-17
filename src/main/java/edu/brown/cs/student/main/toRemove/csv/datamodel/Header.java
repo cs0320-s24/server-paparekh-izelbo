@@ -1,4 +1,4 @@
-package edu.brown.cs.student.main.datamodel;
+package edu.brown.cs.student.main.toRemove.csv.datamodel;
 
 import java.util.ArrayList;
 import java.util.List;

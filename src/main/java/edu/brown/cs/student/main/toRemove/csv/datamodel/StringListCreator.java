@@ -1,7 +1,7 @@
-package edu.brown.cs.student.main.datamodel;
+package edu.brown.cs.student.main.toRemove.csv.datamodel;
 
-import edu.brown.cs.student.main.parser.CreatorFromRow;
-import edu.brown.cs.student.main.parser.FactoryFailureException;
+import edu.brown.cs.student.main.toRemove.csv.parser.CreatorFromRow;
+import edu.brown.cs.student.main.toRemove.csv.parser.FactoryFailureException;
 import java.util.ArrayList;
 import java.util.List;
 

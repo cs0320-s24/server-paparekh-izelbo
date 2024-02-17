@@ -1,4 +1,4 @@
-package edu.brown.cs.student.main.search;
+package edu.brown.cs.student.main.server;
 
 import java.util.ArrayList;
 import java.util.Arrays;

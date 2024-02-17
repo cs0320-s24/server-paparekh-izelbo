@@ -4,11 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
-import edu.brown.cs.student.main.parser.CreatorFromRow;
-import edu.brown.cs.student.main.parser.FactoryFailureException;
-import edu.brown.cs.student.main.search.SearchOptions;
-import edu.brown.cs.student.main.search.SearchResult;
-import edu.brown.cs.student.main.search.SearchType;
+import edu.brown.cs.student.main.toRemove.csv.parser.CreatorFromRow;
+import edu.brown.cs.student.main.toRemove.csv.parser.FactoryFailureException;
+import edu.brown.cs.student.main.server.SearchOptions;
+import edu.brown.cs.student.main.server.SearchResult;
+import edu.brown.cs.student.main.server.SearchType;
+import edu.brown.cs.student.main.toRemove.csv.CsvDataManager;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.EnumSet;

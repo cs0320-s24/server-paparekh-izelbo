@@ -1,4 +1,4 @@
-package edu.brown.cs.student.main.search;
+package edu.brown.cs.student.main.server;
 
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNull;

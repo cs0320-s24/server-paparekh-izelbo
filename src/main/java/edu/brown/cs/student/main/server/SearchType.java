@@ -1,4 +1,4 @@
-package edu.brown.cs.student.main.search;
+package edu.brown.cs.student.main.server;
 
 /**
  * Enumeration representing the different search types: CASE_SENSITIVE, CASE_INSENSITIVE, EXACT,

@@ -1,4 +1,4 @@
-package edu.brown.cs.student.main.search;
+package edu.brown.cs.student.main.server;
 
 /** The Searcher interface provides a template for search */
 public interface Searcher {

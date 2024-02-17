@@ -1,7 +1,12 @@
 package edu.brown.cs.student.main.server;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import spark.Request;
@@ -17,7 +22,7 @@ public class BroadbandHandler implements Route, Broadbands{
   // Storing state, cached broadband, and state-number mapping
   private Map<String, String> stateData = new HashMap<>();
   // TODO: Implement caching functionality
-  private Cache cachedBroadband;
+  private Cache cache = new Cache(this);
   private String[][] stateMapping = {
       {"Alabama", "01"},
       {"Alaska", "02"},
@@ -77,59 +82,54 @@ public class BroadbandHandler implements Route, Broadbands{
   public Object handle(Request request, Response response) {
     broadbandInitializer();
 
-    Set<String> params = request.queryParams();
-    String StateID = request.queryParams("state");
+    // Creating queries
+    Set<String> queryParams = request.queryParams();
+    String stateID = request.queryParams("state");
     String countyID = request.queryParams("county");
-    StateID = StateID.replaceAll(" ", "").toLowerCase();
+    stateID = stateID.replaceAll(" ", "").toLowerCase();
 
-    //    System.out.println(StateID);
-
-    // variables ? City = SanFran
-    //    for (int i = 0; i < params.size(); i++) {
-    //      System.out.println("Parameter (" + i + "): " + params.toArray()[i].toString());
-    //    }
-
-    // Creates a hashmap to store the results of the request
     Map<String, Object> responseMap = new HashMap<>();
 
+    // Sending a request to the API
     try {
-      // Sends a request to the API and receives JSON back
-      String countyJson = this.cache.search(StateID, countyID);
+      String countyJson = this.cache.search(stateID, countyID);
 
-      // Adds results to the responseMap
       responseMap.put("result", "success");
       responseMap.put("time retrieved", LocalTime.now());
 
-      String[][] CountyData = SerializeUtility.JsonToArray(countyJson);
+      String[][] countyData = Serialization.convertToArray(countyJson);
 
-      int x = CountyData.length;
-      int y = CountyData[0].length;
-      String[][] SerializedData = new String[x - 1][y - 2];
+      int numRows = countyData.length;
+      int numCols = countyData[0].length;
+      String[][] serializedData = new String[numRows - 1][numCols - 2];
 
-      // formats output data
-      for (int i = 0; i < SerializedData.length; i++) {
-        for (int j = 0; j < SerializedData[i].length; j++) {
-          SerializedData[i][j] = CountyData[i + 1][j];
+      serializedData = dataFormatter(serializedData, countyData);
 
-        }
-      }
-
-      String JsonData = SerializeUtility.ArrayToJson(SerializedData);
+      String JsonData = Serialization.convertToJson(serializedData);
 
       responseMap.put("data", JsonData);
 
       return responseMap;
-      // return new SuccessResponse(responseMap).serialize(countyJson);
     } catch (Exception e) {
       e.printStackTrace();
 
       // This is a relatively unhelpful exception message. An important part of this sprint will be
       // in learning to debug correctly by creating your own informative error messages where Spark
       // falls short.
-      responseMap.put("result", "Exception");
+      responseMap.put("result", "Exception (" + e + ") encountered");
     }
 
     return responseMap;
+  }
+
+  private String[][] dataFormatter(String[][] serializedData,
+                                   String[][] countyData) {
+    for (int i = 0; i < serializedData.length; i++) {
+      for (int j = 0; j < serializedData[i].length; j++) {
+        serializedData[i][j] = countyData[i + 1][j];
+      }
+    }
+    return serializedData;
   }
 
   private void broadbandInitializer() {
@@ -146,7 +146,24 @@ public class BroadbandHandler implements Route, Broadbands{
   @Override
   public String sendRequest(String stateID, String countyID)
       throws URISyntaxException, IOException, InterruptedException {
-    return null;
+    HttpRequest censusApiRequest =
+            HttpRequest.newBuilder()
+                       .uri(
+                               new URI(
+                                       "https://api.census.gov/data/2021/acs/acs1/subject/variables?get=NAME,S2802_C03_022E&for=county:"
+                                       + countyID
+                                       + "&in=state:"
+                                       + this.stateData.get(stateID.trim().toLowerCase())))
+                       .GET()
+                       .build();
+
+    // Send that API request then store the response
+    HttpResponse<String> sentCensusApiResponse =
+            HttpClient.newBuilder()
+                      .build()
+                      .send(censusApiRequest, HttpResponse.BodyHandlers.ofString());
+
+    return sentCensusApiResponse.body();
   }
 
   public record BroadbandSuccessResponse(String responseType, Map<String, Object> responseMap) {

@@ -2,6 +2,7 @@ package edu.brown.cs.student.main.search;
 
 import static edu.brown.cs.student.main.csv.CLI.logToFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class Search {
 
   private final StringBuilder output = new StringBuilder();
 
-  private final StringBuilder foundPositions = new StringBuilder();
+  private final List<int[]> foundPositions = new ArrayList<>();
 
   public Search() {}
 
@@ -35,6 +36,8 @@ public class Search {
     this.values = elements;
     this.wordToFind = wordToFind;
     this.columnToSearch = columnToSearch;
+
+    this.foundPositions.clear();
 
     // Determine which search method to use
     if (columnToSearch.equals("")) {
@@ -63,18 +66,15 @@ public class Search {
 
       for (int j = 0; j < row.length; j++) {
         if (row[j] != null && row[j].equalsIgnoreCase(this.wordToFind)) {
-          if (isWordFound) {
-            // If not the first found instance, prepend ", " for formatting
-            this.foundPositions.append(", ");
-          }
-          this.foundPositions.append("[").append(i).append(",").append(j).append("]");
+          this.foundPositions.add(new int[]{i, j});
           isWordFound = true; // Set flag to true bc we found the word
         }
       }
     }
 
     if (isWordFound) {
-      printLogger(this.wordToFind + " was found in " + this.foundPositions);
+      String readablePositions = convertToReadableString();
+      printLogger(this.wordToFind + " was found in " + readablePositions);
     } else {
       printLogger("The word " + this.wordToFind + " was not found in any row.");
       logToFile("The word " + this.wordToFind + " was not found in any row.");
@@ -104,16 +104,14 @@ public class Search {
 
       String cellValue = row[columnIndex];
       if (cellValue != null && cellValue.equalsIgnoreCase(wordToFind)) {
-        if (isWordFound) {
-          this.foundPositions.append(", ");
-        }
-        this.foundPositions.append("[").append(i).append(",").append(columnIndex).append("]");
+        foundPositions.add(new int[]{i, columnIndex});
         isWordFound = true;
       }
     }
 
     if (isWordFound) {
-      printLogger(this.wordToFind + " was found in " + this.foundPositions);
+      String readablePositions = convertToReadableString();
+      printLogger(this.wordToFind + " was found in " + readablePositions);
     } else {
       printLogger("Word " + this.wordToFind + " not found in column " + this.columnToSearch + ".");
       logToFile("Word " + this.wordToFind + " not found in column " + this.columnToSearch + ".");
@@ -156,12 +154,26 @@ public class Search {
     this.output.append(message);
   }
 
-
-  public StringBuilder getMatches() {
-    return this.foundPositions;
+  private String convertToReadableString() {
+    StringBuilder sb = new StringBuilder();
+    String[][] positionsArray = getFoundPositionsArray();
+    for (String[] position : positionsArray) {
+      if (sb.length() > 0) sb.append(", ");
+      sb.append("[").append(position[0]).append(",").append(position[1]).append("]");
+    }
+    return sb.toString();
   }
 
 
+  public String[][] getFoundPositionsArray() {
+    String[][] positionsArray = new String[foundPositions.size()][2];
+    for (int i = 0; i < foundPositions.size(); i++) {
+      int[] position = foundPositions.get(i);
+      positionsArray[i][0] = String.valueOf(position[0]);
+      positionsArray[i][1] = String.valueOf(position[1]);
+    }
+    return positionsArray;
+  }
   /**
    * Returns the collected search results and messages as a String. This method allows for testing
    * the output of search operations without side effects.
@@ -175,3 +187,5 @@ public class Search {
     return result;
   }
 }
+
+

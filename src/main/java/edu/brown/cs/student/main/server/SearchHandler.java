@@ -43,48 +43,20 @@ public class SearchHandler implements Route {
       List<String[]> elements = parser.getValues();
       Search search = new Search();
       search.CSVSearch(elements, word, column);
-      StringBuilder matches = search.getMatches();
+      String[][] matches = search.getFoundPositionsArray();
 
-      String JsonSerialized = Serialization.ArrayToJson(matches);
+      String serialized = Serialization.convertToJson(matches);
+
+      responseMap.put("result", "success");
+      responseMap.put("data", serialized);
 
     } catch (Exception e) {
       responseMap.put("result", "error");
     }
 
-    return responseMap;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-//
-//
-//
-//
-//      Set<String> participants = request.queryParams();
-//      String filepath = request.queryParams("filepath");
-//      filepath = filepath.replaceAll(" ", "").toLowerCase();
-//
-//      Creator creator = new Creator();
-//      FileReader file = new FileReader(filepath);
-//      this.parser = new Parser<>(file, creator);
-//
-//      responseMap.put("result", "success");
-//
-//    } catch (FileNotFoundException e) {
-//      responseMap.put("result", "File not found.");
-
-
-    }
-
+    //success?
     return responseMap;
 
   }
+
 }

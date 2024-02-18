@@ -242,7 +242,7 @@ public class BroadbandHandler implements Route, Broadbands {
   }
 
   /**
-   * Failure response for Broadband Hanlder
+   * Failure response for Broadband Handler
    *
    * @param response_type String representing the response type
    */

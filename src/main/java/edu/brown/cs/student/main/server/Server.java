@@ -2,6 +2,10 @@ package edu.brown.cs.student.main.server;
 
 import static spark.Spark.after;
 
+import edu.brown.cs.student.main.server.handlers.BroadbandHandler;
+import edu.brown.cs.student.main.server.handlers.LoadHandler;
+import edu.brown.cs.student.main.server.handlers.SearchHandler;
+import edu.brown.cs.student.main.server.handlers.ViewHandler;
 import spark.Spark;
 
 /** Starts the server and configures the server's routes */

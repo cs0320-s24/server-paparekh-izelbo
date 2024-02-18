@@ -1,7 +1,8 @@
-package edu.brown.cs.student.main.server;
+package edu.brown.cs.student.main.server.handlers;
 
 import edu.brown.cs.student.main.search.Parser;
 import edu.brown.cs.student.main.search.Search;
+import edu.brown.cs.student.main.server.utilities.Serialization;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -10,14 +11,27 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/** Handler for performing searches on loaded data by implementing the Spark Route interface */
 public class SearchHandler implements Route {
 
   private LoadHandler loadHandler;
 
+  /**
+   * Constructs a SearchHandler with the input LoadHandler object
+   *
+   * @param loadHandler the LoadHandler used for accessing data
+   */
   public SearchHandler(LoadHandler loadHandler) {
     this.loadHandler = loadHandler;
   }
 
+  /**
+   * Handles incoming requests for performing searches on loaded data.
+   *
+   * @param request the request object
+   * @param response the response object
+   * @return a Map containing the search result
+   */
   @Override
   public Object handle(Request request, Response response) throws Exception {
     Map<String, Object> responseMap = new HashMap<>();
@@ -51,6 +65,7 @@ public class SearchHandler implements Route {
     return responseMap;
   }
 }
+
 /** Success response after completing search */
 record SearchSuccessResponse(String responseType, Map<String, Object> responseMap) {
 

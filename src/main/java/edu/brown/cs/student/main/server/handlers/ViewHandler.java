@@ -1,6 +1,7 @@
-package edu.brown.cs.student.main.server;
+package edu.brown.cs.student.main.server.handlers;
 
 import edu.brown.cs.student.main.search.Parser;
+import edu.brown.cs.student.main.server.utilities.Serialization;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

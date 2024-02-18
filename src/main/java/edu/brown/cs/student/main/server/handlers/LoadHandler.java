@@ -1,4 +1,4 @@
-package edu.brown.cs.student.main.server;
+package edu.brown.cs.student.main.server.handlers;
 
 import edu.brown.cs.student.main.interfaces.Creator;
 import edu.brown.cs.student.main.search.Parser;

@@ -1,8 +1,11 @@
-package edu.brown.cs.student.main.server;
+package edu.brown.cs.student.main.server.handlers;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
+import edu.brown.cs.student.main.interfaces.Broadbands;
+import edu.brown.cs.student.main.server.utilities.Cache;
+import edu.brown.cs.student.main.server.utilities.Serialization;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URI;
@@ -61,8 +64,11 @@ public class BroadbandHandler implements Route, Broadbands {
 
         for (int i = 1; i < states.size(); i++) {
           List<String> stateInfo = states.get(i);
-          this.stateMapping[i - 1][0] = stateInfo.get(0); // State name
-          this.stateMapping[i - 1][1] = stateInfo.get(1); // State code
+          String stateNameWithoutSpaces = stateInfo.get(0).replace(" ", "");
+          String additionalInfo = stateInfo.get(1);
+
+          this.stateMapping[i - 1][0] = stateNameWithoutSpaces;
+          this.stateMapping[i - 1][1] = additionalInfo;
         }
       }
 
@@ -113,7 +119,8 @@ public class BroadbandHandler implements Route, Broadbands {
       return responseMap;
 
     } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println(
+          "Something went wrong with the request. Ensure the state and county IDs are valid.");
 
       responseMap.put("result", "Exception (" + e + ") encountered");
     }
@@ -163,7 +170,6 @@ public class BroadbandHandler implements Route, Broadbands {
   public String sendRequest(String stateID, String countyID)
       throws URISyntaxException, IOException, InterruptedException {
 
-    System.out.println(stateID);
     HttpRequest censusApiRequest =
         HttpRequest.newBuilder()
             .uri(

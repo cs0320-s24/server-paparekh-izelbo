@@ -3,13 +3,6 @@
 > **IMPORTANT NOTE**: In order to run the server, run `mvn package` in your terminal then `./run` (using Git Bash for Windows users). This will be the same as the first Sprint. Take notice when transferring this run sprint to your Sprint 2 implementation that the path of your Server class matches the path specified in the run script. Currently, it is set to execute Server at `edu/brown/cs/student/main/server/Server`. Running through terminal will save a lot of computer resources (IntelliJ is pretty intensive!) in future sprints.
 
 # Project Details
-Project details
-Project name
-Project description (for final projects)
-Team members and contributions (include cs logins)
-Include the total estimated time it took to complete project
-A link to your repo
-
 Sprint 2 involved creating a server application that provides a web API for 
 both data retrieval and search. Ultimately, teh server would be able to use 
 2 data sources. One of them being a CSV file(s) and the United States Census 

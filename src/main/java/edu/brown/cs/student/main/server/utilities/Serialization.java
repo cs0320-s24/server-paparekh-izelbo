@@ -1,4 +1,4 @@
-package edu.brown.cs.student.main.server;
+package edu.brown.cs.student.main.server.utilities;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -19,7 +19,7 @@ public class Serialization {
       String[][] jsonArray = jsonArrayAdapter.fromJson(countyJson);
       return jsonArray;
     } catch (IOException e) {
-      e.printStackTrace();
+      System.out.println("Error in converting JSON to 2D array");
       return null;
     }
   }

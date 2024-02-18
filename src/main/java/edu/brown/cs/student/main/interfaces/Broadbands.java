@@ -1,4 +1,4 @@
-package edu.brown.cs.student.main.server;
+package edu.brown.cs.student.main.interfaces;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

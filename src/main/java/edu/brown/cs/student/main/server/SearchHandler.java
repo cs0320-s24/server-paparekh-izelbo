@@ -9,14 +9,30 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * Handler for performing search operations on loaded data which implements
+ * the Route interface
+ */
 public class SearchHandler implements Route {
 
   private LoadHandler loadHandler;
 
+  /**
+   * Constructs a SearchHandler with the input LoadHandler
+   *
+   * @param loadHandler the LoadHandler for accessing the data
+   */
   public SearchHandler(LoadHandler loadHandler) {
     this.loadHandler = loadHandler;
   }
 
+  /**
+   * Handles the requests for performing search operations
+   *
+   * @param request  the request object
+   * @param response the response object
+   * @return a Map containing the search result
+   */
   @Override
   public Object handle(Request request, Response response) throws Exception {
     Map<String, Object> responseMap = new HashMap<>();
@@ -25,8 +41,6 @@ public class SearchHandler implements Route {
 
       String word = request.queryParams("word");
       String column = request.queryParams("column");
-
-      // So we don't have to parse more than once
 
       Parser parser = this.loadHandler.getParser();
 
@@ -49,7 +63,6 @@ public class SearchHandler implements Route {
       responseMap.put("result", "error");
     }
 
-    // success?
     return responseMap;
   }
 }

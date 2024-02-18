@@ -5,16 +5,16 @@ import static spark.Spark.after;
 import spark.Spark;
 
 /**
- * Top-level class for this demo. Contains the main() method which starts Spark and runs the various
- * handlers (2).
- *
- * <p>Notice that the OrderHandler takes in a state (menu) that can be shared if we extended the
- * restaurant They need to share state (a menu). This would be a great opportunity to use dependency
- * injection. If we needed more endpoints, more functionality classes, etc. we could make sure they
- * all had the same shared state.
+ * Starts the server and configures the server's routes
  */
 public class Server {
 
+  /**
+   * Main method to start the server, initialize Spark, and start the server
+   * on the port
+   *
+   * @param args
+   */
   public static void main(String[] args) {
 
     System.out.println("test");
@@ -37,7 +37,6 @@ public class Server {
     Spark.init();
     Spark.awaitInitialization();
 
-    // Notice this link alone leads to a 404... Why is that?
     System.out.println("Server started at http://localhost:" + port);
   }
 }

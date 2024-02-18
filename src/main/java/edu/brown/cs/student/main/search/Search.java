@@ -1,6 +1,7 @@
 package edu.brown.cs.student.main.search;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -184,6 +185,7 @@ public class Search {
       positionsArray[i][0] = String.valueOf(position[0]);
       positionsArray[i][1] = String.valueOf(position[1]);
     }
+    System.out.println("Positions array: " + Arrays.deepToString(positionsArray));
     return positionsArray;
   }
   /**

@@ -1,6 +1,10 @@
 package edu.brown.cs.student.main.server;
 
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+import com.squareup.moshi.Types;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -8,6 +12,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import spark.Request;
@@ -23,60 +28,48 @@ public class BroadbandHandler implements Route, Broadbands {
   // Storing state, cached broadband, and state-number mapping
   private Map<String, String> stateData = new HashMap<>();
   private Cache cache = new Cache(this);
-  private final String[][] stateMapping = {
-    {"Alabama", "01"},
-    {"Alaska", "02"},
-    {"Arizona", "04"},
-    {"Arkansas", "05"},
-    {"California", "06"},
-    {"Louisiana", "22"},
-    {"Kentucky", "21"},
-    {"Colorado", "08"},
-    {"Connecticut", "09"},
-    {"Delaware", "10"},
-    {"District of Columbia", "11"},
-    {"Florida", "12"},
-    {"Georgia", "13"},
-    {"Hawaii", "15"},
-    {"Idaho", "16"},
-    {"Illinois", "17"},
-    {"Indiana", "18"},
-    {"Iowa", "19"},
-    {"Kansas", "20"},
-    {"Maine", "23"},
-    {"Maryland", "24"},
-    {"Massachusetts", "25"},
-    {"Michigan", "26"},
-    {"Minnesota", "27"},
-    {"Mississippi", "28"},
-    {"Missouri", "29"},
-    {"Montana", "30"},
-    {"Nebraska", "31"},
-    {"Nevada", "32"},
-    {"New Hampshire", "33"},
-    {"New Jersey", "34"},
-    {"New Mexico", "35"},
-    {"New York", "36"},
-    {"North Carolina", "37"},
-    {"North Dakota", "38"},
-    {"Ohio", "39"},
-    {"Oklahoma", "40"},
-    {"Oregon", "41"},
-    {"Pennsylvania", "42"},
-    {"Rhode Island", "44"},
-    {"South Carolina", "45"},
-    {"South Dakota", "46"},
-    {"Tennessee", "47"},
-    {"Texas", "48"},
-    {"Utah", "49"},
-    {"Vermont", "50"},
-    {"Virginia", "51"},
-    {"Washington", "53"},
-    {"West Virginia", "54"},
-    {"Wisconsin", "55"},
-    {"Wyoming", "56"},
-    {"Puerto Rico", "72"}
-  };
+  private String[][] stateMapping;
+
+  public BroadbandHandler() {
+    populateStateData();
+  }
+
+  public void populateStateData() {
+    try {
+      // Create the HTTP request
+      HttpRequest stateAPIRequest =
+          HttpRequest.newBuilder()
+              .uri(new URI("https://api.census.gov/data/2010/dec/sf1?get=NAME&for=state:*"))
+              .GET()
+              .build();
+
+      // Send the request
+      HttpClient client = HttpClient.newHttpClient();
+      HttpResponse<String> response =
+          client.send(stateAPIRequest, HttpResponse.BodyHandlers.ofString());
+
+      // Use Moshi to parse the JSON response
+      Moshi moshi = new Moshi.Builder().build();
+      Type type = Types.newParameterizedType(List.class, List.class);
+      JsonAdapter<List<List<String>>> jsonAdapter = moshi.adapter(type);
+
+      List<List<String>> states = jsonAdapter.fromJson(response.body());
+
+      if (states != null) {
+        this.stateMapping =
+            new String[states.size() - 1][2]; // -1 to skip header, and 2 for state name and code
+
+        for (int i = 1; i < states.size(); i++) {
+          List<String> stateInfo = states.get(i);
+          this.stateMapping[i - 1][0] = stateInfo.get(0); // State name
+          this.stateMapping[i - 1][1] = stateInfo.get(1); // State code
+        }
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
   /**
    * Handles HTTP requests related to broadband data by retrieving the state and county ID from the
@@ -118,13 +111,14 @@ public class BroadbandHandler implements Route, Broadbands {
       responseMap.put("data", JsonData);
 
       return responseMap;
+
     } catch (Exception e) {
       e.printStackTrace();
 
       responseMap.put("result", "Exception (" + e + ") encountered");
     }
 
-    return responseMap;
+    return new BroadbandFailureResponse();
   }
 
   /**
@@ -201,6 +195,13 @@ public class BroadbandHandler implements Route, Broadbands {
       this("success", responseMap);
     }
 
+    Map getMap() {
+      if (responseMap != null) {
+        return responseMap;
+      }
+      return null;
+    }
+
     /**
      * Serialization of JSON data by converting county JSON data into a JSON string
      *
@@ -231,6 +232,18 @@ public class BroadbandHandler implements Route, Broadbands {
       responseMap.put("data", jsonData);
 
       return jsonData;
+    }
+  }
+
+  /**
+   * Failure response for Broadband Hanlder
+   *
+   * @param response_type String representing the response type
+   */
+  public record BroadbandFailureResponse(String response_type) {
+
+    public BroadbandFailureResponse() {
+      this("failure with response type");
     }
   }
 }

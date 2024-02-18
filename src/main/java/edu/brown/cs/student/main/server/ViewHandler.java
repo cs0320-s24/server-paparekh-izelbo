@@ -8,10 +8,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-/**
- * Handler for viewing loaded data that implements the Spark interface for
- * incoming requests
- */
+/** Handler for viewing loaded data that implements the Spark interface for incoming requests */
 public class ViewHandler implements Route {
 
   private final LoadHandler loadHandler;
@@ -28,7 +25,7 @@ public class ViewHandler implements Route {
   /**
    * Handles the requests for viewing the data from a CSV file
    *
-   * @param request  the request object
+   * @param request the request object
    * @param response the response object
    * @return a Map containing the result of view
    */

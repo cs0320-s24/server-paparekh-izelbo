@@ -1,7 +1,6 @@
 package edu.brown.cs.student.main.csv;
 
 import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.internal.junit.ArrayAsserts.assertArrayEquals;
 
 import edu.brown.cs.student.main.interfaces.Creator;
 import edu.brown.cs.student.main.search.Parser;
@@ -29,7 +28,7 @@ public class SearchTest {
   @Test
   public void testBasicSearch() throws FileNotFoundException {
 
-    String path = "/Users/ianzelbo/Desktop/CS32/server-paparekh-izelbo/data/stars/ten-star.csv";
+    String path = "/Users/ianzelbo/server-paparekh-izelbo/data/stars/ten-star.csv";
 
     Reader reader = new FileReader(path);
     Parser NoColumnParser = new Parser(reader, new Creator());
@@ -42,53 +41,56 @@ public class SearchTest {
 
     // Search without specifying a column -  search across all columns
     tenStarSearch.CSVSearch(elements, "Sol", "");
-    assertEquals(Arrays.deepToString(tenStarSearch.getFoundPositionsArray()),
+    assertEquals(
+        Arrays.deepToString(tenStarSearch.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray));
 
-        reader = new FileReader(path);
-        Parser NoColumnParser1 = new Parser(reader, new Creator());
-        NoColumnParser1.parse();
-        List elements2 = NoColumnParser1.getValues();
-        String[][] foundPositionsArray1 = {{"6, 1"}};
-        tenStarSearch.CSVSearch(elements2, "Proxima Centauri", "");
-    assertEquals(Arrays.deepToString(tenStarSearch.getFoundPositionsArray()),
+    reader = new FileReader(path);
+    Parser NoColumnParser1 = new Parser(reader, new Creator());
+    NoColumnParser1.parse();
+    List elements2 = NoColumnParser1.getValues();
+    String[][] foundPositionsArray1 = {{"6, 1"}};
+    tenStarSearch.CSVSearch(elements2, "Proxima Centauri", "");
+    assertEquals(
+        Arrays.deepToString(tenStarSearch.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray1));
 
-        // Search for a value not present
+    // Search for a value not present
 
-        reader = new FileReader(path);
-        Parser notPresentParser = new Parser(reader, new Creator());
-        notPresentParser.parse();
-        List elements3 = notPresentParser.getValues();
+    reader = new FileReader(path);
+    Parser notPresentParser = new Parser(reader, new Creator());
+    notPresentParser.parse();
+    List elements3 = notPresentParser.getValues();
     String[][] foundPositionsArray2 = {};
-        tenStarSearch.CSVSearch(elements3, "Sun", "");
-    assertEquals(Arrays.deepToString(tenStarSearch.getFoundPositionsArray()),
+    tenStarSearch.CSVSearch(elements3, "Sun", "");
+    assertEquals(
+        Arrays.deepToString(tenStarSearch.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray2));
 
-        // Searching for empty string across all columns should return empty positions in CSV
+    // Searching for empty string across all columns should return empty positions in CSV
 
-        reader = new FileReader(path);
-        Parser emptyParser = new Parser(reader, new Creator());
-        emptyParser.parse();
-        List elements4 = emptyParser.getValues();
+    reader = new FileReader(path);
+    Parser emptyParser = new Parser(reader, new Creator());
+    emptyParser.parse();
+    List elements4 = emptyParser.getValues();
     String[][] foundPositionsArray3 = {{"2, 1"}, {"3, 1"}, {"4, 1"}, {"10, 1"}};
-        tenStarSearch.CSVSearch(elements4, "", "");
-    assertEquals(Arrays.deepToString(tenStarSearch.getFoundPositionsArray()),
+    tenStarSearch.CSVSearch(elements4, "", "");
+    assertEquals(
+        Arrays.deepToString(tenStarSearch.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray3));
 
-        // Searching within a specific column
+    // Searching within a specific column
 
-        reader = new FileReader(path);
-        Parser specificParser = new Parser(reader, new Creator());
-        specificParser.parse();
-        List elements5 = specificParser.getValues();
+    reader = new FileReader(path);
+    Parser specificParser = new Parser(reader, new Creator());
+    specificParser.parse();
+    List elements5 = specificParser.getValues();
     String[][] foundPositionsArray4 = {{"1, 1"}};
-        tenStarSearch.CSVSearch(elements5, "Sol", "ProperName");
-    assertEquals(Arrays.deepToString(tenStarSearch.getFoundPositionsArray()),
+    tenStarSearch.CSVSearch(elements5, "Sol", "ProperName");
+    assertEquals(
+        Arrays.deepToString(tenStarSearch.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray4));
-
   }
-
 
   /**
    * Tests that search for values by index, by column name, and without a column identifier
@@ -98,9 +100,7 @@ public class SearchTest {
   @Test
   public void testIdentifierSearch() throws FileNotFoundException {
     String path =
-
-
- "/Users/ianzelbo/Desktop/CS32/server-paparekh-izelbo/data/census/dol_ri_earnings_disparity.csv";
+        "/Users/ianzelbo/server-paparekh-izelbo/data/census/dol_ri_earnings_disparity.csv";
     Reader reader = new FileReader(path);
     Parser parser = new Parser(reader, new Creator());
     parser.parse();
@@ -110,17 +110,18 @@ public class SearchTest {
 
     // Without specifying a column - search across all columns
     search.CSVSearch(elements, "White", "");
-    assertEquals(Arrays.deepToString(search.getFoundPositionsArray()),
+    assertEquals(
+        Arrays.deepToString(search.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray));
 
     search = new Search();
-
 
     // With a column index
     search.CSVSearch(elements, "Multiracial", "1");
     String[][] foundPositionsArray1 = {{"6, 1"}};
 
-    assertEquals(Arrays.deepToString(search.getFoundPositionsArray()),
+    assertEquals(
+        Arrays.deepToString(search.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray1));
 
     search = new Search();
@@ -130,7 +131,8 @@ public class SearchTest {
 
     String[][] foundPositionsArray2 = {{"2, 5"}};
 
-    assertEquals(Arrays.deepToString(search.getFoundPositionsArray()),
+    assertEquals(
+        Arrays.deepToString(search.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray2));
 
     search = new Search();
@@ -139,17 +141,15 @@ public class SearchTest {
 
     String[][] foundPositionsArray4 = {};
 
-    assertEquals(Arrays.deepToString(search.getFoundPositionsArray()),
+    assertEquals(
+        Arrays.deepToString(search.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray4));
   }
-
 
   @Test
   public void testErrors() throws FileNotFoundException {
     // Testing error when a non-existent column is searched
-    String path =
-
- "/Users/ianzelbo/Desktop/CS32/server-paparekh-izelbo/data/malformed/malformed_signs.csv";
+    String path = "/Users/ianzelbo/server-paparekh-izelbo/data/malformed/malformed_signs.csv";
 
     Reader reader = new FileReader(path);
     Parser parser = new Parser(reader, new Creator());
@@ -160,7 +160,8 @@ public class SearchTest {
     search.CSVSearch(elements, "Sophie", "NonExistentColumn");
     String[][] foundPositionsArray = {};
 
-    assertEquals(Arrays.deepToString(search.getFoundPositionsArray()),
+    assertEquals(
+        Arrays.deepToString(search.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray));
 
     // Column not found
@@ -168,7 +169,8 @@ public class SearchTest {
     search = new Search();
 
     search.CSVSearch(elements, "Sophie", "NonExistentColumn");
-    assertEquals(Arrays.deepToString(search.getFoundPositionsArray()),
+    assertEquals(
+        Arrays.deepToString(search.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray));
 
     // Word not found -- given a column
@@ -176,7 +178,8 @@ public class SearchTest {
     search = new Search();
 
     search.CSVSearch(elements, "WordNotExist", "0");
-    assertEquals(Arrays.deepToString(search.getFoundPositionsArray()),
+    assertEquals(
+        Arrays.deepToString(search.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray));
 
     // Word not found -- in any column
@@ -184,12 +187,12 @@ public class SearchTest {
     search = new Search();
 
     search.CSVSearch(elements, "WordNotExist", "");
-    assertEquals(Arrays.deepToString(search.getFoundPositionsArray()),
+    assertEquals(
+        Arrays.deepToString(search.getFoundPositionsArray()),
         Arrays.deepToString(foundPositionsArray));
 
     // Empty CSV
-    String emptyPath =
- "/Users/ianzelbo/Desktop/CS32/server-paparekh-izelbo/data/census/empty.csv";
+    String emptyPath = "/Users/ianzelbo/server-paparekh-izelbo/data/census/empty.csv";
     reader = new FileReader(emptyPath);
     parser = new Parser(reader, new Creator());
     List elements1 = parser.getValues();
@@ -198,8 +201,7 @@ public class SearchTest {
     search.CSVSearch(elements1, "Word", "");
     String[][] noFoundArray = {};
 
-    assertEquals(Arrays.deepToString(search.getFoundPositionsArray()),
-        Arrays.deepToString(noFoundArray));
+    assertEquals(
+        Arrays.deepToString(search.getFoundPositionsArray()), Arrays.deepToString(noFoundArray));
   }
-
 }

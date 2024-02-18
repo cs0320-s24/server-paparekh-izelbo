@@ -27,8 +27,7 @@ public class ParseTest {
   @Test
   public void testBasicParse() throws FileNotFoundException {
     FileReader file =
-        new FileReader(
-            "/Users/ianzelbo/Desktop/CS32/server-paparekh-izelbo/data/stars/ten-star.csv");
+        new FileReader("/Users/ianzelbo/server-paparekh-izelbo/data/stars/ten-star.csv");
     Creator creator = new Creator();
     Parser<String[]> parser = new Parser<>(file, creator);
 
@@ -89,8 +88,7 @@ public class ParseTest {
   @Test
   public void testCreatorFromRow() throws FileNotFoundException {
     java.io.Reader starReader =
-        new FileReader(
-            "/Users/ianzelbo/Desktop/CS32/server-paparekh-izelbo/data/stars/ten-star.csv");
+        new FileReader("/Users/ianzelbo/server-paparekh-izelbo/data/stars/ten-star.csv");
     Parser<Star> starParser = new Parser(starReader, new StarCreator());
 
     Star expectedStar = new Star("3759", "96 G. Psc", "7.26388", "1.55643", "0.68697");

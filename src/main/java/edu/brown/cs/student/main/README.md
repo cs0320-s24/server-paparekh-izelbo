@@ -72,5 +72,15 @@ After extensively testing the server program, we have not found any bugs.
 There are no checkstyle errors.
 
 # Tests
+We were able to extensively test the CSV parser functionality. 
+However, we were not able to sufficiently test the Server program beyond manual checking.
 
 # How to
+Run the tests: you create a JUnit run configuration in the IntelliJ IDE.
+
+Run the program:
+(1) In the terminal, type mvn clean package
+(2) Type ./run
+(3) Use the server program: http://localhost:3232/[insert type of handler]?[filepath=][CSV data]
+    Example: http://localhost:3232/loadcsv?filepath=data/census/dol_ri_earnings_disparity.csv
+
